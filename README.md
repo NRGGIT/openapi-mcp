@@ -158,3 +158,20 @@ By executing this development plan, we will create a powerful tool that automate
 * Stoplight API Blog, *“Supercharge Your API Program with LLMs,”* – describes using LLMs to automate API code and documentation tasks, with examples of generating docs from code and tests from specs.
 
 These sources reinforce our plan by showing industry trends: using OpenAPI as a foundation for AI integration, leveraging LLMs for documentation and testing, and the need for careful design so that AI agents can reliably use the generated tools. The development plan builds directly on these insights to create a robust, cutting-edge tool.
+
+## Quickstart Example
+
+After implementing the generator you can create a minimal MCP server from any OpenAPI JSON file. The tool also writes simple documentation and a small test script alongside the server code.
+
+```bash
+# install package dependencies
+pip install -e .
+# generate server
+python -m mcpgen --input openapi-example.json --output generated_server
+# run the server (requires FastAPI and uvicorn)
+cd generated_server
+export KM_ACCESS_KEY=<your-access-key>
+uvicorn server:app --reload
+```
+
+The `KM_ACCESS_KEY` environment variable should hold the token used for requests. When running tests against the knowledge model API you must include the `X-KM-AccessKey` header.
