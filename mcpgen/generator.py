@@ -57,15 +57,18 @@ def _generate_code(spec: dict, base_url: str, out: Path) -> None:
         for path, method, info in iter_operations(spec):
             op_id = sanitize(info.get("operationId", f"{method}_{path}"))
             path_params = [p["name"] for p in info.get("parameters", []) if p.get("in") == "path"]
-            params_sig = ", ".join([f"{p}: str" for p in path_params])
-            format_params = ", ".join([f"{p}={p}" for p in path_params])
+
+            params_sig = ", ".join(f"{p}: str" for p in path_params)
             if params_sig:
-                params_sig = ", " + params_sig
+                params_sig += ", "
+            func_sig = f"{params_sig}data: dict | None = None, **query"
+
+            format_params = ", ".join(f"{p}={p}" for p in path_params)
             if format_params:
-                format_params = ", " + format_params
+                format_params = f", {format_params}"
 
             f.write(f"@app.{method}(\"{path}\")\n")
-            f.write(f"def {op_id}(data: dict | None = None{params_sig}, **query):\n")
+            f.write(f"def {op_id}({func_sig}):\n")
             f.write(f"    url = BASE_URL + \"{path}\".format({format_params.strip(', ')})\n")
             f.write(f"    resp = requests.{method}(url, headers=get_headers(), params=query, json=data)\n")
             f.write("    return resp.json()\n\n")
