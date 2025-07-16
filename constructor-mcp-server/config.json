@@ -1,0 +1,15 @@
+{
+  "server": {
+    "name": "constructor-knowledge-api",
+    "version": "1.0.0"
+  },
+  "api": {
+    "base_url": "https://constructor.app/api/platform-kmapi",
+    "title": "ConstructorKnowledgeModel",
+    "version": "0.1.0"
+  },
+  "auth": {
+    "header": "X-KM-AccessKey",
+    "prefix": "Bearer"
+  }
+}
